@@ -8,7 +8,7 @@ let db = new Sequelize(process.env.DB_NAME || 'data', process.env.DB_USER || '',
 // Use sqlite if no env is defined
 if (!process.env.ENVIRONMENT) {
 	db = new Sequelize({
-		storage: process.env.DB_PATH || path.join(__filename, '../../../App_Data/products.db'),
+		storage: process.env.DB_PATH || path.join(__filename, '../../../Test_Data/products.db'),
 		dialect: 'sqlite',
 		logging: false,
 		define: {
