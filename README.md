@@ -21,6 +21,10 @@ The server will not return detailed error messages to clients for security reaso
 
 The server will not modify the primary key (id) of a resource.
 
+### Test Data
+
+The data inside Test_Data/products.db is for testing only. <b>We should not store any production data</b>
+
 ## Getting Started
 
 run the server
