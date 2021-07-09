@@ -1,0 +1,10 @@
+FROM node:16-alpine
+WORKDIR /usr
+COPY package.json ./
+COPY tsconfig.json ./
+COPY src ./src
+COPY Test_Data ./Test_Data
+RUN ls -a
+RUN npm install
+EXPOSE 3001
+CMD ["npm","run","dev"]
