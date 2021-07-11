@@ -1,6 +1,8 @@
 import express from 'express';
 import logger from 'morgan';
-import routes from './routes';
+import swaggerUi from 'swagger-ui-express'
+import YAML from 'yamljs'
+import routes from './routes'; 
 import db from "./config/database.config"
 import { processBody } from './middleware/processBody';
 
@@ -9,6 +11,7 @@ export default async function initServer(){
 
     // Create the application
     const app = express();
+    const swaggerDocument = YAML.load('./openapi.yaml');
 
     app.use(logger('combined'));
     // support json encoded bodies
@@ -22,6 +25,8 @@ export default async function initServer(){
 
     await db.authenticate()
     console.info("connected to db")
+    
+    app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
     return app
 }
