@@ -11,7 +11,8 @@ FROM node:16-alpine
 WORKDIR /usr
 COPY package.json ./
 RUN npm install --only=production
-COPY --from=0 /usr/dist .
+COPY openapi.yaml ./openapi.yaml
+COPY --from=0 /usr/dist ./src
 RUN npm install pm2 -g
 EXPOSE 80
-CMD ["pm2-runtime","app.js"]
+CMD ["pm2-runtime","src/app.js"]

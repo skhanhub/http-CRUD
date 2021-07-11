@@ -4,6 +4,7 @@ COPY package.json ./
 COPY tsconfig.json ./
 COPY src ./src
 COPY Test_Data ./Test_Data
+COPY openapi.yaml ./openapi.yaml
 RUN ls -a
 RUN npm install
 EXPOSE 3001
