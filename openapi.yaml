@@ -1,0 +1,148 @@
+openapi: 3.0.0
+info:
+  title: Simple Survey API
+  description: API for maintaining the products and the options table
+  version: 1.0.0-oas3
+servers:
+- url: http://localhost:3001
+tags:
+- name: products
+  description: products
+paths:
+  /products:
+    get:
+      tags:
+      - products
+      summary: get products
+      description: |
+        By passing in the appropriate options, you can search for
+        available products in the system
+      operationId: get
+      parameters:
+        - in: query
+          name: name
+          schema:
+            type: string
+          description: Return the product that contains the name query parameter in the product name
+      responses:
+        "200":
+          description: search results matching criteria
+          content:
+            application/json:
+              schema:
+                properties:
+                  items:
+                    $ref: '#/components/schemas/productList'
+        "422":
+          description: Unprocessable Entity
+    post:
+      tags:
+      - products
+      summary: create product
+      description: Create a new product
+      operationId: create
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/productCore'
+      responses:
+        "201":
+          description: Product created
+          headers:
+            Location:
+              schema:
+                type: string
+                description: URI of the newly created product
+        "422":
+          description: Unprocessable Entity
+  /products/{id}:
+    parameters:
+    - in: path
+      name: id
+      schema:
+        type: string
+        format: uuid
+      required: true
+      description: uuid of the product
+    get:
+      tags:
+      - products
+      summary: get product
+      description: Get a product using its id
+      operationId: get
+      responses:
+        "200":
+          description: search results matching criteria
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/product'
+        "404":
+          description: Product not found
+        "422":
+          description: Unprocessable Entity
+    put:
+      tags:
+      - products
+      summary: update product
+      description: Update an existing product
+      operationId: update
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/productCore'
+      responses:
+        "202":
+          description: Update accepted
+        "404":
+          description: Product not found
+        "422":
+          description: Unprocessable Entity
+    delete:
+      tags:
+      - products
+      summary: delete product
+      description: |
+        Delete a product using its id
+      operationId: delete
+      responses:
+        "202":
+          description: Delete accepted
+        "404":
+          description: Product not found
+        "422":
+          description: Unprocessable Entity
+components:
+  schemas:
+    product:
+      allOf:
+        - type: object
+          properties:
+            id:
+              type: string
+              format: uuid
+              example: d290f1ee-6c54-4b01-90e6-d701748f0851
+        - $ref: '#/components/schemas/productCore'
+    productCore:
+      type: object
+      properties:
+        name:
+          type: string
+          example: "Samsung Galaxy S10"
+        description:
+          type: string
+          example: "Brand New Samsung Galaxy S10"
+        price:
+          type: number
+          example: 150
+        deliveryPrice:
+          type: number
+          example: 12.5
+    productList:
+      type: array
+      items:
+        $ref: '#/components/schemas/product'
